@@ -2,7 +2,7 @@
 
 This repository contains firmware for the [robots](https://github.com/robot-uprising-hq/ai-robot-hardware) that can be used in [Micro Invader competition](https://github.com/robot-uprising-hq/ai-guide).
 
-The firmware supports Wifi and Bluetooth. If WiFi is used, the motor commands are send via simple encoded UDP messages.
+The firmware supports Wifi and Bluetooth. If WiFi is used, the motor commands can be send via simple encoded UDP messages.
 
 The firmware works well with [zero-ones-simulated](https://github.com/zero-ones-given/zero-ones-simulated) simulator.
 
