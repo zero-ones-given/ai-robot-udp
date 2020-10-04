@@ -1,14 +1,25 @@
-# miniInvaderFW
+# Micro Invaders Firmware (UDP)
+
+This repository contains firmware for the [robots](https://github.com/robot-uprising-hq/ai-robot-hardware) that can be used in [Micro Invader competition](https://github.com/robot-uprising-hq/ai-guide).
+
+The firmware supports Wifi and Bluetooth. If WiFi is used, the motor commands are send via simple encoded UDP messages.
+
+The firmware works well with [zero-ones-simulated](https://github.com/zero-ones-given/zero-ones-simulated) simulator.
+
+There is also another alternative firmware for the robot, [ai-robot](https://github.com/robot-uprising-hq/ai-robot), which uses protocol buffers to serialize the data. It works well with [ai-simulator](https://github.com/robot-uprising-hq/ai-simulator).
 
 ## Getting started
+
 Prepare yourself for an adventure in robotics! And remember, the real treasure in programming is not the result but the bugs we make along the way.
 
 ### Assembly
+
 Connect the right motor to connector J2 and the left motor to J3.
 
-### Configure Wi-Fi or Bluetooth via serial
-* Connect board to computer via USB
-* Establish [serial connection](https://docs.espressif.com/projects/esp-idf/en/release-v4.1/get-started/establish-serial-connection.html)
+### Configure WiFi or Bluetooth via serial
+
+- Connect board to computer via USB
+- Establish [serial connection](https://docs.espressif.com/projects/esp-idf/en/release-v4.1/get-started/establish-serial-connection.html)
 
 You can connect for example using screen:
 
@@ -29,9 +40,11 @@ Or by modifying and running the [python example](examples/send-udp.py)
 Install the Espressif toolchain: https://docs.espressif.com/projects/esp-idf/en/release-v4.1/
 
 Run menuconfig and ensure that:
-* bluetooth classic is enabled and BLE is disabled
-* the custom partition table partitions.csv is selected
-* at least 4MB flash size is selected from `Serial flasher config > Flash size`
+
+- bluetooth classic is enabled and BLE is disabled
+- the custom partition table partitions.csv is selected
+- at least 4MB flash size is selected from `Serial flasher config > Flash size`
+
 ```
     idf.py menuconfig
 ```
