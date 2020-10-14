@@ -53,34 +53,40 @@ void* connect_wifi()
 
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
-
-    ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
-    ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler, NULL));
-
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
-    ESP_ERROR_CHECK(esp_wifi_start() );
 
-    ESP_LOGI(TAG, "wifi_init finished.");
-
-    /* Waiting until either the connection is established (WIFI_CONNECTED_BIT) or connection failed for the maximum
-     * number of re-tries (WIFI_FAIL_BIT). The bits are set by event_handler() */
-    EventBits_t bits = xEventGroupWaitBits(s_wifi_event_group,
-            WIFI_CONNECTED_BIT | WIFI_FAIL_BIT,
-            pdFALSE,
-            pdFALSE,
-            portMAX_DELAY);
-
-    if (bits & WIFI_CONNECTED_BIT) {
-        ESP_LOGI(TAG, "connected to Wi-Fi");
-    } else if (bits & WIFI_FAIL_BIT) {
-        ESP_LOGI(TAG, "Failed to connect to Wi-Fi");
+    wifi_config_t config;
+    esp_wifi_get_config(WIFI_IF_STA, &config);
+    if (strlen((char *)config.sta.ssid) == 0 || strlen((char *)config.sta.password) == 0) {
+        ESP_LOGI(TAG, "Wifi credentials are not set.");
     } else {
-        ESP_LOGE(TAG, "UNEXPECTED EVENT");
-    }
+        ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
+        ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler, NULL));
 
-    ESP_ERROR_CHECK(esp_event_handler_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler));
-    ESP_ERROR_CHECK(esp_event_handler_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler));
-    vEventGroupDelete(s_wifi_event_group);
+        ESP_ERROR_CHECK(esp_wifi_start() );
+
+        ESP_LOGI(TAG, "wifi_init finished.");
+
+        /* Waiting until either the connection is established (WIFI_CONNECTED_BIT) or connection failed for the maximum
+        * number of re-tries (WIFI_FAIL_BIT). The bits are set by event_handler() */
+        EventBits_t bits = xEventGroupWaitBits(s_wifi_event_group,
+                WIFI_CONNECTED_BIT | WIFI_FAIL_BIT,
+                pdFALSE,
+                pdFALSE,
+                portMAX_DELAY);
+
+        if (bits & WIFI_CONNECTED_BIT) {
+            ESP_LOGI(TAG, "connected to Wi-Fi");
+        } else if (bits & WIFI_FAIL_BIT) {
+            ESP_LOGI(TAG, "Failed to connect to Wi-Fi");
+        } else {
+            ESP_LOGE(TAG, "UNEXPECTED EVENT");
+        }
+
+        ESP_ERROR_CHECK(esp_event_handler_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler));
+        ESP_ERROR_CHECK(esp_event_handler_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler));
+        vEventGroupDelete(s_wifi_event_group);
+    }
 
     if (esp_ip_address == NULL) {
         return "Connection error";

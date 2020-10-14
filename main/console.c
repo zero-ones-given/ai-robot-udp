@@ -94,9 +94,9 @@ void configure_wifi()
     strcpy((char*)wifi_config.sta.ssid, ssid);
     strcpy((char*)wifi_config.sta.password, password);
     if (esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) == ESP_OK) {
-        printf("The configration has been saved.\n");
+        printf("\nThe configration has been saved.\n");
     } else {
-        printf("The configration could not be saved.\n");
+        printf("\nThe configration could not be saved.\n");
     }
 
     linenoiseFree(ssid);

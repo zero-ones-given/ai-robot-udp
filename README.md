@@ -18,12 +18,17 @@ Connect the right motor to connector J2 and the left motor to J3.
 
 ### Configure WiFi or Bluetooth via serial
 
+- Make sure the firmware has been flashed
 - Connect board to computer via USB
 - Establish [serial connection](https://docs.espressif.com/projects/esp-idf/en/release-v4.1/get-started/establish-serial-connection.html)
 
-You can connect for example using screen:
+You can connect for example using screen or the monitor command if you have the Espressif toolchain installed:
 
     screen [port] 115200
+
+![screenshot](screenshot.png)
+
+To connect to WiFi, press any key to open the terminal and then press the `w` key. The terminal will prompt you for the WiFi ssid and password and then reboot the robot. After rebooting, you can use the `i` command to check the ip that was assigned to the robot during startup.
 
 ### Controlling the robot
 
@@ -33,13 +38,20 @@ Once you have set up the Wi-Fi connection, you should be able to control the rob
 
 Or by modifying and running the [python example](examples/send-udp.py)
 
----
 
-## Development
+## Flashing the firmware
 
 Install the Espressif toolchain: https://docs.espressif.com/projects/esp-idf/en/release-v4.1/
 
-Run menuconfig and ensure that:
+Build and flash the project:
+
+    idf.py build
+    idf.py -p [port] flash
+
+
+## Troubleshooting
+
+If you have trouble flashing, you can try running menuconfig and ensure that:
 
 - bluetooth classic is enabled and BLE is disabled
 - the custom partition table partitions.csv is selected
@@ -49,12 +61,7 @@ Run menuconfig and ensure that:
     idf.py menuconfig
 ```
 
-Build and flash the project:
-
-    idf.py build
-    idf.py -p [port] flash
-
-Monitor:
+To take a look at the log output or connect to the built in console, you can:
 
     idf.py -p [port] monitor
 
