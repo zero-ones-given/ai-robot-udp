@@ -93,11 +93,37 @@ void configure_wifi()
     };
     strcpy((char*)wifi_config.sta.ssid, ssid);
     strcpy((char*)wifi_config.sta.password, password);
-    if (esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) == ESP_OK) {
-        printf("\nThe configration has been saved.\n");
-    } else {
-        printf("\nThe configration could not be saved.\n");
+    /*esp_err_t error = esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config);
+    switch (error) {
+        case ESP_OK:
+            printf("\nThe configration has been saved.\n");
+            break;
+        case ESP_ERR_WIFI_NOT_INIT:
+            printf("\nWiFi is not initialized by esp_wifi_init\n");
+            break;
+        case ESP_ERR_INVALID_ARG:
+            printf("\ninvalid argument\n");
+            break;
+        case ESP_ERR_WIFI_IF:
+            printf("\ninvalid interface\n");
+            break;
+        case ESP_ERR_WIFI_MODE:
+            printf("\ninvalid mode\n");
+            break;
+        case ESP_ERR_WIFI_PASSWORD:
+            printf("\ninvalid password\n");
+            break;
+        case ESP_ERR_WIFI_NVS:
+            printf("\nWiFi internal NVS error\n");
+            break;
+        default:
+            printf("\nOther error: %d\n", error);
+            break;
     }
+    if (error != ESP_OK) {
+        printf("\nThe configration could not be saved.\n");
+    }*/
+    ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
 
     linenoiseFree(ssid);
     linenoiseFree(password);
