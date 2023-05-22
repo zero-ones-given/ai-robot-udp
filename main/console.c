@@ -14,13 +14,14 @@
 
 char *USER_PROMPT = " user > ";
 char *ROBOT_PROMPT = "robot > ";
+int UART = 0;
 
 char get_user_input_character(char *prompt, bool is_silent) {
     printf(prompt);
     char user_input = 255;
     while (user_input == 255) {
         user_input = fgetc(stdin);
-        vTaskDelay(10/portTICK_RATE_MS);
+        vTaskDelay(10/portTICK_PERIOD_MS);
     }
     if (!is_silent) {
         printf("%c\r\n", user_input);
@@ -32,7 +33,7 @@ char* get_user_input_string(char *prompt) {
     char* line = NULL;
     while(line == NULL) {
         line = linenoise(prompt);
-        vTaskDelay(10/portTICK_RATE_MS);
+        vTaskDelay(10/portTICK_PERIOD_MS);
     }
     return line;
 }
@@ -128,7 +129,7 @@ void configure_wifi()
     linenoiseFree(ssid);
     linenoiseFree(password);
 
-    get_user_input_character("Presse any key to reboot.", false);
+    get_user_input_character("Press any key to reboot.", false);
     esp_restart();
 }
 
@@ -139,9 +140,9 @@ void initialize_console()
     setvbuf(stdin, NULL, _IONBF, 0);
 
     /* Minicom, screen, idf_monitor send CR when ENTER key is pressed */
-    esp_vfs_dev_uart_set_rx_line_endings(ESP_LINE_ENDINGS_CR);
+    esp_vfs_dev_uart_port_set_rx_line_endings(UART, ESP_LINE_ENDINGS_CR);
     /* Move the caret to the beginning of the next line on '\n' */
-    esp_vfs_dev_uart_set_tx_line_endings(ESP_LINE_ENDINGS_CRLF);
+    esp_vfs_dev_uart_port_set_tx_line_endings(UART, ESP_LINE_ENDINGS_CRLF);
 
     const uart_config_t uart_config = {
             .baud_rate = CONFIG_ESP_CONSOLE_UART_BAUDRATE,
@@ -172,10 +173,10 @@ void console_task(void *ip_address)
     initialize_console();
 
     // wait for a second for the other tasks to stop outputting init messages
-    vTaskDelay(1000/portTICK_RATE_MS);
+    vTaskDelay(1000/portTICK_PERIOD_MS);
 
     // ensure the user sees the welcome screen by waiting for key press
-    get_user_input_character("Press any key to start terminal", true);
+    get_user_input_character("Press any key to start terminal, please", true);
 
     int probe_status = linenoiseProbe();
     if (probe_status) {

@@ -23,7 +23,7 @@ void gpio_init()
     printf("Motor control GPIO init\n");
     gpio_config_t io_conf;
     
-    io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
+    io_conf.intr_type = GPIO_INTR_DISABLE;
     io_conf.mode = GPIO_MODE_OUTPUT;
     io_conf.pin_bit_mask = MOTOR_DIR_PIN_SEL;
     io_conf.pull_down_en = 0;
@@ -94,6 +94,6 @@ void motor_control_task(void *args)
         set_motor_pwm(MCPWM_OPR_A, motor_value_right);
         set_motor_pwm(MCPWM_OPR_B, motor_value_left);
         
-        vTaskDelay(10 / portTICK_RATE_MS);
+        vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 }

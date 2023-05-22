@@ -58,7 +58,7 @@ void device_test(void)
                 printf("Battery voltage: %f\n", battery_status);
             }
             
-            vTaskDelay(10/portTICK_RATE_MS);
+            vTaskDelay(10/portTICK_PERIOD_MS);
         }
     }
 }

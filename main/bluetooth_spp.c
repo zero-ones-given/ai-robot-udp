@@ -27,7 +27,7 @@
 #include "bluetooth_spp.h"
 #include "motor_control.h"
 
-static const esp_spp_mode_t esp_spp_mode = ESP_SPP_MODE_CB;
+//static const esp_spp_mode_t esp_spp_mode = ESP_SPP_MODE_CB;
 
 static const esp_spp_sec_t sec_mask = ESP_SPP_SEC_AUTHENTICATE;
 static const esp_spp_role_t role_slave = ESP_SPP_ROLE_SLAVE;
@@ -121,8 +121,8 @@ void control_logic(uint8_t *data, uint16_t len)
 static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
 {
     switch (event) {
-    case ESP_SPP_INIT_EVT:
-        ESP_LOGI(SPP_TAG, "ESP_SPP_INIT_EVT");
+    case esp_spp_enhanced_init:
+        ESP_LOGI(SPP_TAG, "esp_spp_enhanced_init_EVT");
         esp_bt_dev_set_device_name(DEVICE_NAME);
         esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_GENERAL_DISCOVERABLE);
         esp_spp_start_srv(sec_mask,role_slave, 0, SPP_SERVER_NAME);
@@ -242,7 +242,8 @@ void setup_bt(void)
         return;
     }
 
-    if ((ret = esp_spp_init(esp_spp_mode)) != ESP_OK) {
+    esp_spp_cfg_t bt_spp_cfg = BT_SPP_DEFAULT_CONFIG();
+    if ((ret = esp_spp_enhanced_init(&bt_spp_cfg)) != ESP_OK) {
         ESP_LOGE(SPP_TAG, "%s spp init failed: %s\n", __func__, esp_err_to_name(ret));
         return;
     }

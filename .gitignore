@@ -12,3 +12,5 @@ _deps
 
 build/
 sdkconfig.old
+.vscode
+.DS_Store

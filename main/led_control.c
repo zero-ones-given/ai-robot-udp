@@ -17,7 +17,7 @@ void led_control_setup()
     printf("LED GPIO init\n");
     gpio_config_t io_conf;
     
-    io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
+    io_conf.intr_type = GPIO_INTR_DISABLE;
     io_conf.mode = GPIO_MODE_OUTPUT;
     io_conf.pin_bit_mask = LED_PIN_SEL;
     io_conf.pull_down_en = 0;
@@ -65,6 +65,6 @@ void led_control_task(void *args)
             gpio_set_level(LED_ACTIVITY, 0);
         }
                 
-        vTaskDelay(200/portTICK_RATE_MS);
+        vTaskDelay(200/portTICK_PERIOD_MS);
     }
 }

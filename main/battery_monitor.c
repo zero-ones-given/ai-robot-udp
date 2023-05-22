@@ -17,7 +17,7 @@ void battery_monitor_setup()
 {
     printf("LED GPIO init\n");
 
-    adc2_config_channel_atten(BATTERY_MONITOR_CHANNEL, ADC_ATTEN_11db );
+    adc2_config_channel_atten(BATTERY_MONITOR_CHANNEL, ADC_ATTEN_DB_11 );
     esp_adc_cal_characterize(ADC_UNIT_2, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_12, 1100, &adc_characteristic);
 }
 
@@ -46,6 +46,6 @@ void battery_monitor_task(void *args)
             battery_status = 0.9*battery_status + 0.1*v_batt;
         }
                 
-        vTaskDelay(100/portTICK_RATE_MS);
+        vTaskDelay(100/portTICK_PERIOD_MS);
     }
 }
