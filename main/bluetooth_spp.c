@@ -121,7 +121,7 @@ void control_logic(uint8_t *data, uint16_t len)
 static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
 {
     switch (event) {
-    case esp_spp_enhanced_init:
+    case ESP_SPP_INIT_EVT:
         ESP_LOGI(SPP_TAG, "esp_spp_enhanced_init_EVT");
         esp_bt_dev_set_device_name(DEVICE_NAME);
         esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_GENERAL_DISCOVERABLE);

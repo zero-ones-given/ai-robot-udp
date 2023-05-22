@@ -20,7 +20,7 @@ Connect the right motor to connector J2 and the left motor to J3.
 
 - Make sure the firmware has been flashed
 - Connect board to computer via USB
-- Establish [serial connection](https://docs.espressif.com/projects/esp-idf/en/release-v4.1/get-started/establish-serial-connection.html)
+- Establish [serial connection](https://docs.espressif.com/projects/esp-idf/en/v5.0.2/esp32/get-started/establish-serial-connection.html?highlight=serial)
 
 You can connect for example using screen or the monitor command if you have the Espressif toolchain installed:
 
@@ -41,7 +41,7 @@ Or by modifying and running the [python example](examples/send-udp.py)
 
 ## Flashing the firmware
 
-Install the Espressif toolchain: https://docs.espressif.com/projects/esp-idf/en/release-v4.1/
+Install the Espressif toolchain: https://docs.espressif.com/projects/esp-idf/en/v5.0.2/esp32/get-started/index.html
 
 Before using the toolchain you should set the environment by running (in the terminal you want to use to run it):
 ```
