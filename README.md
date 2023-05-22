@@ -43,6 +43,11 @@ Or by modifying and running the [python example](examples/send-udp.py)
 
 Install the Espressif toolchain: https://docs.espressif.com/projects/esp-idf/en/release-v4.1/
 
+Before using the toolchain you should set the environment by running (in the terminal you want to use to run it):
+```
+. $HOME/esp/esp-idf/export.sh
+```
+
 Build and flash the project:
 
     idf.py build
